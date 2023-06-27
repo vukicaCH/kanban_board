@@ -1,0 +1,25 @@
+<template>
+        <div class="task-board">
+            <TaskRow v-for="group in store.groups" :group="group" :key="group.id"/>
+        </div>
+</template>
+
+<script setup>
+import TaskRow from './TaskRow.vue';
+import { useStore } from '@/store';
+
+const store = useStore();
+</script>
+
+<style scoped>
+.task-board {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: repeat(5,1fr);
+    gap: 5px;
+    padding: 10px;
+    min-width: 800px;
+    max-width: fit-content;
+    margin: auto;
+}
+</style>

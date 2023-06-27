@@ -1,0 +1,70 @@
+{
+    "groups":[
+        {
+            "name" : "Marketing",
+            "id": "1"
+        },
+       {
+            "name" : "SEO",
+            "id": "2"
+        },
+        {
+            "name": "Management",
+            "id" : "3"
+        },
+        {
+            "name": "Coordinations",
+            "id" : "4"
+        }
+    ],
+    "tasks":[
+        {
+            "id": "1",
+            "groupId" : "3",
+            "text" : "Do this and this",
+            "key" : "1"
+        },
+        {
+            "id": "2",
+            "groupId" : "4",
+            "text" : "Do this and this",
+            "key" : "2"
+        },
+        {
+            "id": "3",
+            "groupId" : "1",
+            "text" : "Do this and this",
+            "key" : "1"
+        },
+        {
+            "id": "4",
+            "groupId" : "2",
+            "text" : "Do this and this",
+            "key" : "2"
+        },
+        {
+            "id": "5",
+            "groupId" : "4",
+            "text" : "Do this and this",
+            "key" : "2"
+        },
+        {
+            "id": "6",
+            "groupId" : "3",
+            "text" : "Do this and this",
+            "key" : "3"
+        },
+        {
+            "id": "7",
+            "groupId" : "2",
+            "text" : "Do this and this",
+            "key" : "1"
+        },
+        {
+            "id": "8",
+            "groupId" : "2",
+            "text" : "Do this and this",
+            "key" : "2"
+        }
+    ]
+}
