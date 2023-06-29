@@ -14,7 +14,7 @@
             </option>
         </select>
         <div class="edit-task-buttons">
-            <button @click="props.closeEditForm();emit('taskEditDone');">Cancel</button>
+            <button @click="emit('taskEditDone');">Cancel</button>
             <button @click="submitEditTask()" :disabled="!(task.text && task.key)"
                 :class="{ 'disabled:opacity-50': !(task.text && task.key) }">Add Task</button>
         </div>
@@ -25,7 +25,7 @@
 import { defineProps, defineEmits, reactive } from 'vue';
 import { useStore } from '../store/index';
 
-const props = defineProps(['task', 'closeEditForm']);
+const props = defineProps(['task']);
 const emit = defineEmits('taskEditDone');
 const store = useStore();
 
@@ -33,7 +33,6 @@ const task = reactive(props.task);
 
 const submitEditTask = () => {
     store.editTask(task.id, task.groupId, task.text, task.key);
-    props.closeEditForm();
     emit('taskEditDone');
 }
 

@@ -8,7 +8,8 @@ export const useStore = defineStore('store', {
         groups: info.groups,
         tasks: info.tasks,
         selectedTaskRow: info.groups[0].id,
-        isNewItemFormOpened: false
+        isNewItemFormOpened: false,
+        isDraggable: true,
     }),
     getters:{
         getTasks(state){

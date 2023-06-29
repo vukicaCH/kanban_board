@@ -15,20 +15,22 @@
         </select>
         <div class="new-task-buttons">
             <button @click="store.closeNewItemForm()">Cancel</button>
-            <button @click="submitNewTask()" :disabled="!(taskText && taskKeyColor)"
-                :class="{ 'disabled:opacity-50': !(taskText && taskKeyColor) }">Add Task</button>
+            <button @click="submitNewTask()" :disabled="!isDisabled"
+                :class="{ 'disabled:opacity-50': !isDisabled }">Add Task</button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, computed } from 'vue';
 import { useStore } from '@/store';
+
+const emit = defineEmits(['newTaskAdded']);
 
 const taskText = ref('');
 const taskKeyColor = ref('');
 
-const emit = defineEmits(['newTaskAdded']);
+const isDisabled = computed(()=> taskText.value && taskKeyColor.value);
 
 const store = useStore();
 

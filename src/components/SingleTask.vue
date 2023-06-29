@@ -5,17 +5,19 @@
             <h3 class="task-name">{{ task.text }}</h3>
         </div>
     </div>
-    <EditTaskForm v-else :task="task" :closeEditForm="closeEditForm" @taskEditDone = "enableDrag()"/>
+    <EditTaskForm v-else :task="task" @taskEditDone = "enableDrag()" />
 </template>
 
 <script setup>
-import { defineProps,defineEmits, ref, computed, reactive } from 'vue';
+import { defineProps, ref, computed, reactive } from 'vue';
 import EditTaskForm from './EditTaskForm.vue';
+import { useStore } from '../store/index';
 
 const props = defineProps(['task']);
-const emit = defineEmits(['isTaskBeingEdited']);
 
 const task = reactive(props.task);
+
+const store = useStore();
 
 const isTaskBeingEdited = ref(false);
 
@@ -36,11 +38,12 @@ const closeEditForm = () => isTaskBeingEdited.value = false;
 
 const disableDrag = () => {
     isTaskBeingEdited.value = true;
-    emit('isTaskBeingEdited', true);
+    store.isDraggable = false;
 }
 
 const enableDrag = () => {
-    emit('isTaskBeingEdited', false);
+    closeEditForm();
+    store.isDraggable = true;
 }
 
 </script>

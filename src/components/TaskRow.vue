@@ -10,7 +10,7 @@
                 @start="drag = true;"
                 @end="drag = false"
                 item-key="id"
-                :disabled = "draggableDisabled"
+                :disabled = "!store.isDraggable"
             >
                 <template #item="{ element }">
                     <Task
@@ -26,19 +26,17 @@
 </template>
 
 <script setup>
-import { defineProps, watch, ref } from 'vue';
+import {defineProps, watch, ref } from 'vue';
 import Task from './SingleTask.vue';
 import { useStore } from '../store/index';
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import NewTaskForm from './NewTaskForm.vue'
 
-const props = defineProps(['group', 'tasks']);
+const props = defineProps(['group']);
 
 const store = useStore();
 const { selectedTaskRow } = storeToRefs(store);
-
-const draggableDisabled = ref(false);
 
 const tasks = ref(store.tasks.filter(task => task.groupId === props.group.id));
 
