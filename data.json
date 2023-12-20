@@ -22,49 +22,75 @@
             "id": "1",
             "groupId" : "3",
             "text" : "Do this and this",
-            "key" : "1"
+            "key" : "1",
+            "collaborators": [1,2,3]
         },
         {
             "id": "2",
             "groupId" : "4",
             "text" : "Do this and this",
-            "key" : "2"
+            "key" : "2",
+            "collaborators": [1,2,3]
         },
         {
             "id": "3",
             "groupId" : "1",
             "text" : "Do this and this",
-            "key" : "1"
+            "key" : "1",
+            "collaborators": ["1","2","3"]
         },
         {
             "id": "4",
             "groupId" : "2",
             "text" : "Do this and this",
-            "key" : "2"
+            "key" : "2",
+            "collaborators": ["1","2","3"]
         },
         {
             "id": "5",
             "groupId" : "4",
             "text" : "Do this and this",
-            "key" : "2"
+            "key" : "2",
+            "collaborators": ["1","2","3"]
         },
         {
             "id": "6",
             "groupId" : "3",
             "text" : "Do this and this",
-            "key" : "3"
+            "key" : "3",
+            "collaborators": ["1","2","3"]
         },
         {
             "id": "7",
             "groupId" : "2",
             "text" : "Do this and this",
-            "key" : "1"
+            "key" : "1",
+            "collaborators": ["1","2","3"]
         },
         {
             "id": "8",
             "groupId" : "2",
             "text" : "Do this and this",
-            "key" : "2"
+            "key" : "2",
+            "collaborators": ["1","2","3"]
+        }
+    ],
+    "users":[
+        {
+            "id": "1",
+            "name": "Marko"
+        },
+        {
+            "id": "2",
+            "name": "Stefan"
+        },
+        {
+            "id": "3",
+            "name": "Nikola"
+        },
+        {
+            "id": "4",
+            "name": "Milica"
         }
     ]
 }

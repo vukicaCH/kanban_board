@@ -7,8 +7,10 @@ export const useStore = defineStore('store', {
     state: () => ({
         groups: info.groups,
         tasks: info.tasks,
+        users: info.users,
         selectedTaskRow: info.groups[0].id,
         isNewItemFormOpened: false,
+        isNewTaskRowFormOpened: false,
         isDraggable: true,
     }),
     getters:{
@@ -29,12 +31,21 @@ export const useStore = defineStore('store', {
             this.isNewItemFormOpened = false;
         },
 
-        addTask(text, groupId, key){
+        openNewTaskRowForm(){
+            this.isNewTaskRowFormOpened = true;
+        },
+
+        closeNewTaskRowForm(){
+            this.isNewTaskRowFormOpened = false;
+        },
+
+        addTask(text, groupId, key, collaborators){
             const newTask = {
                 id: this.tasks.length,
                 groupId,
                 text,
-                key
+                key,
+                collaborators
             }
 
             this.tasks = [
@@ -43,7 +54,7 @@ export const useStore = defineStore('store', {
             ];
         },
 
-        editTask(id, groupId, text, key){
+        editTask(id, groupId, text, key, collaborators){
 
             this.tasks = this.tasks.filter(task => task.id != id);
 
@@ -51,10 +62,17 @@ export const useStore = defineStore('store', {
                 id,
                 groupId,
                 text,
-                key
+                key,
+                collaborators
             }
 
+            console.log(editedTask);
+
             this.tasks = [...this.tasks, editedTask].sort( (a,b) => a.id < b.id ? -1 : 1);
+        },
+
+        addRow(name){
+            this.groups.push({name, id: this.groups.length - 1})
         }
     }
 })

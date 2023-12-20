@@ -3,17 +3,26 @@
         <div class="task-importance" :class="color"></div>
         <div class="task-data">
             <h3 class="task-name">{{ task.text }}</h3>
+            <div class="task-collaborators bg-gray-400 text-white py-1 px-2">
+                <span>Ucesnici:</span>
+                <ul class="text-xs flex space-x-2">
+                    <li v-for="user in users" :key="user.id">
+                        {{ user.name }}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <EditTaskForm v-else :task="task" @taskEditDone = "enableDrag()" />
 </template>
 
 <script setup>
-import { defineProps, ref, computed, reactive } from 'vue';
+import { defineProps, defineEmits, ref, computed, reactive, watch } from 'vue';
 import EditTaskForm from './EditTaskForm.vue';
 import { useStore } from '../store/index';
 
 const props = defineProps(['task']);
+const emit = defineEmits(['editDone']);
 
 const task = reactive(props.task);
 
@@ -44,7 +53,19 @@ const disableDrag = () => {
 const enableDrag = () => {
     closeEditForm();
     store.isDraggable = true;
+    emit('editDone');
 }
+
+const users = ref(store.users.filter(user => props.task.collaborators.includes(user.id)))
+
+watch(()=> props.task, ()=>{
+    task.value = props.task
+    const collabs = [...task.value.collaborators];
+    console.log(collabs);
+    users.value = store.users.filter(user => collabs.includes(user.id));
+    users.value = users.value.map(user => Object.assign({}, user))
+    
+})
 
 </script>
 

@@ -13,6 +13,10 @@
                 <div>In Progress</div>
             </option>
         </select>
+        <select multiple v-model="collaborators">
+            <option disabled value="">Please select collaborators</option>
+            <option v-for="user in store.users" :value="user.id" :key="user.id">{{  user.name }}</option>
+        </select>
         <div class="edit-task-buttons">
             <button @click="emit('taskEditDone');">Cancel</button>
             <button @click="submitEditTask()" :disabled="!(task.text && task.key)"
@@ -22,7 +26,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, reactive } from 'vue';
+import { defineProps, defineEmits, reactive, ref } from 'vue';
 import { useStore } from '../store/index';
 
 const props = defineProps(['task']);
@@ -31,8 +35,10 @@ const store = useStore();
 
 const task = reactive(props.task);
 
+const collaborators = ref([]);
+
 const submitEditTask = () => {
-    store.editTask(task.id, task.groupId, task.text, task.key);
+    store.editTask(task.id, task.groupId, task.text, task.key, [...collaborators.value]);
     emit('taskEditDone');
 }
 

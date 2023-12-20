@@ -13,6 +13,9 @@
                 <div>In Progress</div>
             </option>
         </select>
+        <select v-model="taskUsers" multiple>
+            <option v-for="user in store.users" :value="user.id" :key="user.id">{{ user.name }}</option>
+        </select>
         <div class="new-task-buttons">
             <button @click="store.closeNewItemForm()">Cancel</button>
             <button @click="submitNewTask()" :disabled="!isDisabled"
@@ -27,15 +30,16 @@ import { useStore } from '@/store';
 
 const emit = defineEmits(['newTaskAdded']);
 
+const store = useStore();
+
 const taskText = ref('');
 const taskKeyColor = ref('');
+const taskUsers = ref([]);
 
 const isDisabled = computed(()=> taskText.value && taskKeyColor.value);
 
-const store = useStore();
-
 const submitNewTask = () => {
-    store.addTask(taskText.value, store.selectedTaskRow, taskKeyColor.value.toLowerCase());
+    store.addTask(taskText.value, store.selectedTaskRow, taskKeyColor.value.toLowerCase(), [...taskUsers.value]);
     taskText.value = '';
     taskKeyColor.value = '';
     emit('newTaskAdded');

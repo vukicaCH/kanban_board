@@ -1,7 +1,10 @@
 <template>
     <div class="task-row" :class="{ 'bg-blue-200': isRowActive }">
-        <div class="task-row-name">
-            <h2 @click="store.changeSelectedTaskRow(props.group.id)">{{ props.group.name }}</h2>
+        <div class="task-row-name" v-if="!isNameChange" @dblclick="isNameChange = true">
+            <h2 @click="store.changeSelectedTaskRow(props.group.id)">{{ rowName }}</h2>
+        </div>
+        <div class="task-row-name" v-else @focusout="isNameChange = false">
+            <input type="text" v-model="rowName" />
         </div>
             <draggable
                 class="tasks"
@@ -21,7 +24,10 @@
                     />
                 </template>
             </draggable>
-            <NewTaskForm v-if="isRowActive && store.isNewItemFormOpened" @new-task-added="refreshTasks()"/>
+            <NewTaskForm
+                v-if="isRowActive && store.isNewItemFormOpened"
+                @new-task-added="refreshTasks()"
+                />
         </div>
 </template>
 
@@ -34,6 +40,9 @@ import draggable from 'vuedraggable'
 import NewTaskForm from './NewTaskForm.vue'
 
 const props = defineProps(['group']);
+
+const isNameChange = ref(false);
+const rowName = ref(props.group.name);
 
 const store = useStore();
 const { selectedTaskRow } = storeToRefs(store);
@@ -48,6 +57,9 @@ watch(() => selectedTaskRow.value, () => {
 
 const refreshTasks = () => tasks.value = store.tasks.filter(task => task.groupId === props.group.id);
 
+store.$subscribe(()=>{
+    tasks.value = store.tasks.filter(task => task.groupId === props.group.id);
+})
 </script>
 
 <style scoped>

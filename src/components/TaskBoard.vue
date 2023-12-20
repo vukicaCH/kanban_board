@@ -1,11 +1,13 @@
 <template>
         <div class="task-board">
             <TaskRow v-for="group in store.groups" :group="group" :key="group.id"/>
+            <NewTaskRowForm />
         </div>
 </template>
 
 <script setup>
 import TaskRow from './TaskRow.vue';
+import NewTaskRowForm from './NewTaskRowForm.vue'
 import { useStore } from '@/store';
 
 const store = useStore();
