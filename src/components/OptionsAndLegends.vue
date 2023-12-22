@@ -15,7 +15,7 @@
                 <div class="task-key-color-meaning">In Progress</div>
             </div>
         </div>
-        <div class="new-item">
+        <div class="actions">
             <button @click="store.openNewItemForm()">Add New Item</button>
         </div>
     </div>
@@ -49,8 +49,9 @@ const store = useStore();
     gap: 5px;
 }
 
-.new-item button {
-    margin: 10px 0;
+
+.actions button {
+    margin: 10px;
     padding: 5px;
     font-size: 13px;
     font-weight: 500;

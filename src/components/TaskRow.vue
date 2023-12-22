@@ -1,12 +1,14 @@
 <template>
-    <div class="task-row" :class="{ 'bg-blue-200': isRowActive }">
-        <div class="task-row-name" v-if="!isNameChange" @dblclick="isNameChange = true">
-            <h2 @click="store.changeSelectedTaskRow(props.group.id)">{{ rowName }}</h2>
-        </div>
-        <div class="task-row-name" v-else @focusout="isNameChange = false">
+    <div class="task-row" :class="{'bg-blue-200' : isSelectedRow}">
+        <div class="task-row-name" v-if="editMode && isSelectedRow">
             <input type="text" v-model="rowName" />
+            <button @click="editName()">Save</button>
         </div>
-            <draggable
+        <div class="flex items-center gap-2" v-else>
+            <h2>{{ props.group.name }}</h2>
+            <PencilIcon class="w-4 h-4" @click="toggleEdit()"/>
+        </div>
+            <!-- <draggable
                 class="tasks"
                 v-model="tasks"
                 group="people"
@@ -23,42 +25,45 @@
                         @is-task-being-edited="(bool) => draggableDisabled = bool"
                     />
                 </template>
-            </draggable>
-            <NewTaskForm
-                v-if="isRowActive && store.isNewItemFormOpened"
-                @new-task-added="refreshTasks()"
-                />
+            </draggable> -->
+            <!-- <div v-if="isRowActive">
+                <button @click="toggleEdit()">Edit</button>
+            </div> -->
         </div>
 </template>
 
 <script setup>
-import {defineProps, watch, ref } from 'vue';
-import Task from './SingleTask.vue';
+import {defineProps, watchEffect,  ref} from 'vue';
+//import Task from './SingleTask.vue';
 import { useStore } from '../store/index';
-import { storeToRefs } from 'pinia'
-import draggable from 'vuedraggable'
-import NewTaskForm from './NewTaskForm.vue'
+//import draggable from 'vuedraggable'
+//import NewTaskForm from './NewTaskForm.vue'
+import { PencilIcon } from '@heroicons/vue/24/outline'
+
+const store = useStore();
 
 const props = defineProps(['group']);
 
-const isNameChange = ref(false);
 const rowName = ref(props.group.name);
 
-const store = useStore();
-const { selectedTaskRow } = storeToRefs(store);
+const isSelectedRow = ref();
 
-const tasks = ref(store.tasks.filter(task => task.groupId === props.group.id));
+//const tasks = ref();
 
-const isRowActive = ref(selectedTaskRow.value == Number(props.group.id));
+const editMode = ref(false);
 
-watch(() => selectedTaskRow.value, () => {
-    isRowActive.value = selectedTaskRow.value == Number(props.group.id)
-})
+const toggleEdit = () => {
+    editMode.value = !editMode.value;
+}
 
-const refreshTasks = () => tasks.value = store.tasks.filter(task => task.groupId === props.group.id);
+const editName = () => {
+    store.changeGroupName(rowName.value);
+    toggleEdit();
+}
 
-store.$subscribe(()=>{
-    tasks.value = store.tasks.filter(task => task.groupId === props.group.id);
+watchEffect(()=>{
+    isSelectedRow.value = props.group.id == store.selectedTaskRow;
+    rowName.value = props.group.name; //SVAKI PUT KADA SELEKTUJEMO DRUGI RED, rowName mora da se vrati na pocetnu vrednost
 })
 </script>
 
@@ -73,10 +78,12 @@ store.$subscribe(()=>{
     padding: 5px 10px;
     cursor: pointer;
     border: 1px solid rgb(142, 136, 136);
+    position:relative;
 }
 
 .task-row-name {
     display: flex;
+    flex-direction: column;
     margin-top: 10px;
 }
 
