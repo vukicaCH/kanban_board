@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <OptionsAndLegend />
-      <TaskBoard :groups="state.groups" />
+      <TaskBoard/>
     </div>
   </div>
 </template>
@@ -10,24 +10,6 @@
 <script setup>
 import TaskBoard from './components/TaskBoard.vue'
 import OptionsAndLegend from './components/OptionsAndLegends.vue'
-import data from '../data.json';
-import { provide, ref } from 'vue';
-
-const state = ref(data);
-const selectedTaskRow = ref(3);
-
-const changeSelectedTaskRow = (id) => {
-  selectedTaskRow.value = id;
-  console.log(selectedTaskRow.value);
-}
-
-provide('state', {
-  groups: state.value.groups,
-  tasks: state.value.tasks,
-  selectedTaskRow: selectedTaskRow.value,
-  changeSelectedTaskRow
-});
-
 </script>
 
 <style>

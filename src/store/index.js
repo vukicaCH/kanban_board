@@ -66,13 +66,19 @@ export const useStore = defineStore('store', {
                 collaborators
             }
 
-            console.log(editedTask);
-
             this.tasks = [...this.tasks, editedTask].sort( (a,b) => a.id < b.id ? -1 : 1);
         },
 
         addRow(name){
-            this.groups.push({name, id: this.groups.length - 1})
+            this.groups = [...this.groups, {name, id: this.groups.length + 1}]
+        },
+
+        changeGroupName(name){
+            const group = this.groups.find(group => group.id === this.selectedTaskRow);
+
+            const newGroup = {name, id: group.id};
+
+            this.groups = [...this.groups.filter(group => group.id != this.selectedTaskRow), newGroup].sort( (a,b) => a.id < b.id ? -1 : 1);
         }
     }
 })

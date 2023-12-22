@@ -2,25 +2,25 @@
     "groups":[
         {
             "name" : "Marketing",
-            "id": "1"
+            "id": 1
         },
        {
             "name" : "SEO",
-            "id": "2"
+            "id": 2
         },
         {
             "name": "Management",
-            "id" : "3"
+            "id" : 3
         },
         {
             "name": "Coordinations",
-            "id" : "4"
+            "id" : 4
         }
     ],
     "tasks":[
         {
             "id": "1",
-            "groupId" : "3",
+            "groupId" : 1,
             "text" : "Do this and this",
             "key" : "1",
             "collaborators": [1,2,3]

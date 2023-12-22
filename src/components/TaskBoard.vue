@@ -1,6 +1,9 @@
 <template>
         <div class="task-board">
-            <TaskRow v-for="group in store.groups" :group="group" :key="group.id"/>
+            <TaskRow
+                v-for="group in groups" :group="group" :key="group.id"
+                @click="store.changeSelectedTaskRow(group.id)"
+            />
             <NewTaskRowForm />
         </div>
 </template>
@@ -9,8 +12,16 @@
 import TaskRow from './TaskRow.vue';
 import NewTaskRowForm from './NewTaskRowForm.vue'
 import { useStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { watch } from 'vue';
 
 const store = useStore();
+
+const {groups} = storeToRefs(store);
+
+watch(()=> groups.value, ()=>{
+    console.log(groups.value);
+})
 </script>
 
 <style scoped>
