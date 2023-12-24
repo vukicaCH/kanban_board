@@ -11,7 +11,25 @@
             </div>
         </div>
         <div class="w-100 mt-16">
-            <Task v-for="task in tasks" :task="task" :key="task.id"/>
+            <!-- <Task v-for="task in tasks" :task="task" :key="task.id"/> -->
+            <draggable
+                class="tasks"
+                v-model="tasks"
+                group="people"
+                item-key="id"
+                :disabled="isTaskEdit"
+                @move="(event) => onMoveCallback(event, props.group.id)"
+                :id="group.id"
+            >
+                <template #item="{ element }">
+                    <Task
+                        :key="element.id"
+                        :itemKey="element.id"
+                        :task="element"
+                        :toggle-task-edit="toggleTaskEdit"
+                    />
+                </template>
+            </draggable>
             <div
                 v-if="isSelectedRow"
                 class="w-full flex flex-col gap-2"
@@ -33,7 +51,7 @@
 import {defineProps, watchEffect, watch, ref} from 'vue';
 import Task from './SingleTask.vue';
 import { useStore } from '../store/index';
-//import draggable from 'vuedraggable'
+import draggable from 'vuedraggable'
 import NewTaskForm from './NewTaskForm.vue'
 import { PencilIcon } from '@heroicons/vue/24/outline'
 
@@ -63,6 +81,10 @@ const editName = () => {
     toggleEdit();
 }
 
+const isTaskEdit = ref(false);
+
+const toggleTaskEdit = () => isTaskEdit.value = !isTaskEdit.value;
+
 watchEffect(()=>{
     tasks.value = store.getTasks(props.group.id);
 })
@@ -73,6 +95,10 @@ watch(()=> store.selectedTaskRow, ()=>{
     editMode.value = false;
     addMode.value = false;
 })
+
+const onMoveCallback = (evt) => {
+    store.changeTaskGroup(evt.to.id)
+}
 </script>
 
 <style scoped>

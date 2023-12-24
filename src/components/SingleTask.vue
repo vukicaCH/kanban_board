@@ -21,7 +21,7 @@ import { defineProps, defineEmits, ref, computed, reactive, watch } from 'vue';
 import EditTaskForm from './EditTaskForm.vue';
 import { useStore } from '../store/index';
 
-const props = defineProps(['task']);
+const props = defineProps(['task', 'toggleTaskEdit']);
 const emit = defineEmits(['editDone']);
 
 const task = reactive(props.task);
@@ -47,12 +47,12 @@ const closeEditForm = () => isTaskBeingEdited.value = false;
 
 const disableDrag = () => {
     isTaskBeingEdited.value = true;
-    store.isDraggable = false;
+    props.toggleTaskEdit();
 }
 
 const enableDrag = () => {
     closeEditForm();
-    store.isDraggable = true;
+    props.toggleTaskEdit();
     emit('editDone');
 }
 

@@ -3,7 +3,7 @@ import data from '../../data.json'
 
 const info = data;
 
-export const useStore = defineStore('store', {
+export const useStore = defineStore('store',{
     state: () => ({
         groups: info.groups,
         tasks: info.tasks,
@@ -107,6 +107,11 @@ export const useStore = defineStore('store', {
             }
 
             this.tasks = [...newTasks];
-        }
-    }
+        },
+
+        changeTaskGroup(id){
+
+            this.tasks = [...this.tasks.filter(task => task.id != id)];
+        },
+    },
 })

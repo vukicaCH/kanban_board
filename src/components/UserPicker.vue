@@ -1,7 +1,7 @@
 <script setup>
 import { useStore } from '@/store';
 import { storeToRefs } from 'pinia';
-import { defineProps, defineEmits, toRef, watch} from 'vue';
+import { defineProps, defineEmits, toRef} from 'vue';
 
 const props = defineProps(['collaborators']);
 const emit = defineEmits(['userSelected']);
