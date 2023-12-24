@@ -30,7 +30,6 @@ import OptionsAndLegend from './components/OptionsAndLegends.vue'
   display: table;
   height: 100%;
   position: absolute;
-  overflow: hidden;
   width: 100%;
   display: flex;
   align-items: center;

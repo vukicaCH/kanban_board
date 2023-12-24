@@ -1,6 +1,6 @@
 <template>
     <div class="new-task">
-        <input type="text" v-model="taskText" />
+        <input type="text" v-model="taskText" placeholder="Task Name..."/>
         <select v-model="taskKeyColor">
             <option disabled value="">Please select key</option>
             <option class="completed" value="1">
@@ -13,11 +13,9 @@
                 <div>In Progress</div>
             </option>
         </select>
-        <select v-model="taskUsers" multiple>
-            <option v-for="user in store.users" :value="user.id" :key="user.id">{{ user.name }}</option>
-        </select>
+        <UserPicker @userSelected="(users) => taskUsers = users" :collaborators="taskUsers"/>
         <div class="new-task-buttons">
-            <button @click="store.closeNewItemForm()">Cancel</button>
+            <button @click="props.close()">Cancel</button>
             <button @click="submitNewTask()" :disabled="!isDisabled"
                 :class="{ 'disabled:opacity-50': !isDisabled }">Add Task</button>
         </div>
@@ -25,10 +23,11 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, computed } from 'vue';
+import { ref, computed, defineProps } from 'vue';
 import { useStore } from '@/store';
+import UserPicker from './UserPicker.vue';
 
-const emit = defineEmits(['newTaskAdded']);
+const props = defineProps(['close']);
 
 const store = useStore();
 
@@ -36,15 +35,14 @@ const taskText = ref('');
 const taskKeyColor = ref('');
 const taskUsers = ref([]);
 
-const isDisabled = computed(()=> taskText.value && taskKeyColor.value);
+const isDisabled = computed(()=> taskText.value && taskKeyColor.value && taskUsers.value.length);
 
 const submitNewTask = () => {
     store.addTask(taskText.value, store.selectedTaskRow, taskKeyColor.value.toLowerCase(), [...taskUsers.value]);
     taskText.value = '';
     taskKeyColor.value = '';
-    emit('newTaskAdded');
+    props.close();
 }
-
 </script>
 
 <style scoped>

@@ -13,21 +13,20 @@
                 <div>In Progress</div>
             </option>
         </select>
-        <select multiple v-model="collaborators">
-            <option disabled value="">Please select collaborators</option>
-            <option v-for="user in store.users" :value="user.id" :key="user.id">{{  user.name }}</option>
-        </select>
+        <UserPicker @userSelected="(users) => task.collaborators = users" :collaborators="task.collaborators"/>
         <div class="edit-task-buttons">
             <button @click="emit('taskEditDone');">Cancel</button>
-            <button @click="submitEditTask()" :disabled="!(task.text && task.key)"
-                :class="{ 'disabled:opacity-50': !(task.text && task.key) }">Add Task</button>
+            <button @click="submitEditTask()" :disabled="!(task.text && task.key && task.collaborators.length)"
+                :class="{ 'disabled:opacity-50': !(task.text && task.key && task.collaborators.length) }">Edit</button>
+            <button class="bg-red-500" @click="store.deleteTask(task.id)">Delete</button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, reactive, ref } from 'vue';
+import { defineProps, defineEmits, reactive } from 'vue';
 import { useStore } from '../store/index';
+import UserPicker from './UserPicker.vue';
 
 const props = defineProps(['task']);
 const emit = defineEmits('taskEditDone');
@@ -35,10 +34,8 @@ const store = useStore();
 
 const task = reactive(props.task);
 
-const collaborators = ref([]);
-
 const submitEditTask = () => {
-    store.editTask(task.id, task.groupId, task.text, task.key, [...collaborators.value]);
+    store.editTask(task.id, task.groupId, task.text, task.key, [...task.collaborators]);
     emit('taskEditDone');
 }
 

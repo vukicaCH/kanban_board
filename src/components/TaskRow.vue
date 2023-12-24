@@ -1,43 +1,40 @@
 <template>
     <div class="task-row" :class="{'bg-blue-200' : isSelectedRow}">
-        <div class="task-row-name" v-if="editMode && isSelectedRow">
-            <input type="text" v-model="rowName" />
-            <button @click="editName()">Save</button>
+        <div class="absolute top-1 left-1">
+            <div class="task-row-name" v-if="editMode && isSelectedRow">
+                <input type="text" v-model="rowName" />
+                <button @click="editName()">Save</button>
+            </div>
+            <div class="flex items-center gap-2" v-else>
+                <h2>{{ props.group.name }}</h2>
+                <PencilIcon class="w-4 h-4" @click="toggleEdit()"  v-if="isSelectedRow"/>
+            </div>
         </div>
-        <div class="flex items-center gap-2" v-else>
-            <h2>{{ props.group.name }}</h2>
-            <PencilIcon class="w-4 h-4" @click="toggleEdit()"/>
-        </div>
-            <!-- <draggable
-                class="tasks"
-                v-model="tasks"
-                group="people"
-                @start="drag = true;"
-                @end="drag = false"
-                item-key="id"
-                :disabled = "!store.isDraggable"
+        <div class="w-100 mt-16">
+            <Task v-for="task in tasks" :task="task" :key="task.id"/>
+            <div
+                v-if="isSelectedRow"
+                class="w-full flex flex-col gap-2"
             >
-                <template #item="{ element }">
-                    <Task
-                        :key="element.id"
-                        :itemKey="element.id"
-                        :task="element"
-                        @is-task-being-edited="(bool) => draggableDisabled = bool"
-                    />
-                </template>
-            </draggable> -->
-            <!-- <div v-if="isRowActive">
-                <button @click="toggleEdit()">Edit</button>
-            </div> -->
+                <span
+                    class="inline-block w-full bg-red-500 text-center font-medium text-white"
+                    v-if="!addMode"
+                    @click="toggleAdd"
+                >
+                    +
+                </span>
+                <NewTaskForm :close="toggleAdd" v-else/>
+            </div>
         </div>
+    </div>
 </template>
 
 <script setup>
-import {defineProps, watchEffect,  ref} from 'vue';
-//import Task from './SingleTask.vue';
+import {defineProps, watchEffect, watch, ref} from 'vue';
+import Task from './SingleTask.vue';
 import { useStore } from '../store/index';
 //import draggable from 'vuedraggable'
-//import NewTaskForm from './NewTaskForm.vue'
+import NewTaskForm from './NewTaskForm.vue'
 import { PencilIcon } from '@heroicons/vue/24/outline'
 
 const store = useStore();
@@ -46,14 +43,19 @@ const props = defineProps(['group']);
 
 const rowName = ref(props.group.name);
 
-const isSelectedRow = ref();
+const isSelectedRow = ref(props.group.id == store.selectedTaskRow);
 
-//const tasks = ref();
+const tasks = ref();
 
 const editMode = ref(false);
+const addMode = ref(false);
 
 const toggleEdit = () => {
     editMode.value = !editMode.value;
+}
+
+const toggleAdd = () =>{
+    addMode.value = !addMode.value;
 }
 
 const editName = () => {
@@ -62,8 +64,14 @@ const editName = () => {
 }
 
 watchEffect(()=>{
+    tasks.value = store.getTasks(props.group.id);
+})
+
+watch(()=> store.selectedTaskRow, ()=>{
     isSelectedRow.value = props.group.id == store.selectedTaskRow;
     rowName.value = props.group.name; //SVAKI PUT KADA SELEKTUJEMO DRUGI RED, rowName mora da se vrati na pocetnu vrednost
+    editMode.value = false;
+    addMode.value = false;
 })
 </script>
 
@@ -72,7 +80,6 @@ watchEffect(()=>{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     max-width: 220px;
     max-height: fit-content;
     padding: 5px 10px;

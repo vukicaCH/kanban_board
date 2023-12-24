@@ -41,7 +41,7 @@ export const useStore = defineStore('store', {
 
         addTask(text, groupId, key, collaborators){
             const newTask = {
-                id: this.tasks.length,
+                id: this.tasks[this.tasks.length - 1].id + 1,
                 groupId,
                 text,
                 key,
@@ -69,6 +69,10 @@ export const useStore = defineStore('store', {
             this.tasks = [...this.tasks, editedTask].sort( (a,b) => a.id < b.id ? -1 : 1);
         },
 
+        deleteTask(id){
+            this.tasks = this.tasks.filter(task => task.id != id);
+        },
+
         addRow(name){
             this.groups = [...this.groups, {name, id: this.groups.length + 1}]
         },
@@ -79,6 +83,30 @@ export const useStore = defineStore('store', {
             const newGroup = {name, id: group.id};
 
             this.groups = [...this.groups.filter(group => group.id != this.selectedTaskRow), newGroup].sort( (a,b) => a.id < b.id ? -1 : 1);
+        },
+
+        addUser(name){
+            const newUser = {
+                id: this.users[this.users.length - 1].id + 1,
+                name
+            }
+
+            this.users = [...this.users, newUser];
+        },
+
+        deleteUser(id){
+            this.users = [...this.users.filter(user => user.id != id)];
+            
+            const newTasks = [];
+
+            for(let task of this.tasks){
+                const newTaskCollaborators = task.collaborators.filter(userId => userId != id);
+                const newTask = {...task, collaborators : [...newTaskCollaborators]};
+
+                newTasks.push(newTask);
+            }
+
+            this.tasks = [...newTasks];
         }
     }
 })

@@ -10,18 +10,13 @@
 
 <script setup>
 import TaskRow from './TaskRow.vue';
-import NewTaskRowForm from './NewTaskRowForm.vue'
+import NewTaskRowForm from './NewTaskRowForm.vue';
 import { useStore } from '@/store';
 import { storeToRefs } from 'pinia';
-import { watch } from 'vue';
 
 const store = useStore();
 
 const {groups} = storeToRefs(store);
-
-watch(()=> groups.value, ()=>{
-    console.log(groups.value);
-})
 </script>
 
 <style scoped>

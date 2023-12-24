@@ -15,16 +15,35 @@
                 <div class="task-key-color-meaning">In Progress</div>
             </div>
         </div>
-        <div class="actions">
-            <button @click="store.openNewItemForm()">Add New Item</button>
+        <div class="actions mt-5 space-y-3">
+            <div class="bg-blue-300 px-4 py-3">
+                <h3 class="font-bold">ADD USER</h3>
+                <div class="flex flex-col items-start gap-1 mt-2">
+                    <input v-model="userName" class="shadow border border-gray-100" placeholder="enter username"/>
+                    <button @click="store.addUser(userName)" :disabled="!userName">Add New User</button>
+                </div>
+            </div>
+            <div>
+                <h3 class="font-bold">AVAILABLE USERS</h3>
+
+                <div class="flex flex-col space-y-1">
+                    <div v-for="user in store.users" :key="user.id" class="flex items-center">
+                        <span class="underline text-lg">{{ user.name }}</span>
+                        <button class="text-sm bg-red-500 text-white px-2 ml-3" @click="store.deleteUser(user.id)">OBRISI</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import {useStore} from '../store/index';
+import {ref} from 'vue';
 
 const store = useStore();
+
+const userName = ref('');
 </script>
 
 <style scoped>
@@ -47,16 +66,6 @@ const store = useStore();
     display: grid;
     grid-template-columns: 1fr 5fr;
     gap: 5px;
-}
-
-
-.actions button {
-    margin: 10px;
-    padding: 5px;
-    font-size: 13px;
-    font-weight: 500;
-    color: white;
-    background-color: rgb(59, 191, 59);
 }
 
 .urgent {
