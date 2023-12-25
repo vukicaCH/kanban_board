@@ -15,7 +15,7 @@ export const useStore = defineStore('store',{
     }),
     getters:{
         getTasks(state){
-            return (id) => state.tasks.filter(task => task.groupId === id);
+            return (id) => state.tasks.filter(task => task.groupId == id);
         }
     },
     actions:{
@@ -109,9 +109,14 @@ export const useStore = defineStore('store',{
             this.tasks = [...newTasks];
         },
 
-        changeTaskGroup(id){
-
-            this.tasks = [...this.tasks.filter(task => task.id != id)];
-        },
+        changeTasks(params){
+            const task = {...params.task, groupId: params.to };
+        
+            const oldTasks = this.tasks.filter(task => task.id != params.task.id);
+        
+            const newTasks = [...oldTasks, task];
+        
+            this.tasks = [...newTasks];
+        }
     },
 })

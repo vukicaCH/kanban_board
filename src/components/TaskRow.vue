@@ -11,15 +11,14 @@
             </div>
         </div>
         <div class="w-100 mt-16">
-            <!-- <Task v-for="task in tasks" :task="task" :key="task.id"/> -->
             <draggable
                 class="tasks"
                 v-model="tasks"
-                group="people"
+                group="tasks"
                 item-key="id"
                 :disabled="isTaskEdit"
-                @move="(event) => onMoveCallback(event, props.group.id)"
                 :id="group.id"
+                @end="(evt) => store.changeTasks({task: evt.item.__draggable_context.element, to: evt.to.id})"
             >
                 <template #item="{ element }">
                     <Task
@@ -95,10 +94,6 @@ watch(()=> store.selectedTaskRow, ()=>{
     editMode.value = false;
     addMode.value = false;
 })
-
-const onMoveCallback = (evt) => {
-    store.changeTaskGroup(evt.to.id)
-}
 </script>
 
 <style scoped>
