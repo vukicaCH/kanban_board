@@ -6,18 +6,12 @@ const info = data;
 export const useStore = defineStore('store',{
     state: () => ({
         groups: info.groups,
-        tasks: info.tasks,
         users: info.users,
         selectedTaskRow: info.groups[0].id,
         isNewItemFormOpened: false,
         isNewTaskRowFormOpened: false,
         isDraggable: true,
     }),
-    getters:{
-        getTasks(state){
-            return (id) => state.tasks.filter(task => task.groupId == id);
-        }
-    },
     actions:{
         changeSelectedTaskRow(id){
             this.selectedTaskRow = id;
@@ -40,47 +34,57 @@ export const useStore = defineStore('store',{
         },
 
         addTask(text, groupId, key, collaborators){
+            const group = this.groups.find(group => group.id == groupId)
+
+            const id = group.tasks[group.tasks.length - 1]?.id ? group.tasks[group.tasks.length - 1]?.id + 1 : 0;
+
             const newTask = {
-                id: this.tasks[this.tasks.length - 1].id + 1,
-                groupId,
+                id: id,
                 text,
                 key,
                 collaborators
             }
 
-            this.tasks = [
-                ...this.tasks,
+            group.tasks = [
+                ...group.tasks,
                 newTask
             ];
+
+            this.groups = [...this.groups.filter(group => group.id != groupId), group].sort( (a,b) => a.id < b.id ? -1 : 1);
         },
 
         editTask(id, groupId, text, key, collaborators){
 
-            this.tasks = this.tasks.filter(task => task.id != id);
+            const group = this.groups.find(group => group.id == groupId)
 
             const editedTask = {
                 id,
-                groupId,
                 text,
                 key,
                 collaborators
             }
 
-            this.tasks = [...this.tasks, editedTask].sort( (a,b) => a.id < b.id ? -1 : 1);
+            group.tasks = [...group.tasks.filter(task => task.id != id), editedTask].sort( (a,b) => a.id < b.id ? -1 : 1);
+
+            this.groups = [...this.groups.filter(group => group.id != groupId), group].sort( (a,b) => a.id < b.id ? -1 : 1);
         },
 
-        deleteTask(id){
-            this.tasks = this.tasks.filter(task => task.id != id);
+        deleteTask(id, groupId){
+            const group = this.groups.find(group =>group.id == groupId)
+
+            group.tasks = [...group.tasks.filter(task => task.id != id)];
+
+            this.groups = [...this.groups.filter(group => group.id != groupId), group].sort( (a,b) => a.id < b.id ? -1 : 1);
         },
 
         addRow(name){
-            this.groups = [...this.groups, {name, id: this.groups.length + 1}]
+            this.groups = [...this.groups, {name, id: this.groups.length + 1, tasks: []}]
         },
 
         changeGroupName(name){
             const group = this.groups.find(group => group.id === this.selectedTaskRow);
 
-            const newGroup = {name, id: group.id};
+            const newGroup = {...group, name};
 
             this.groups = [...this.groups.filter(group => group.id != this.selectedTaskRow), newGroup].sort( (a,b) => a.id < b.id ? -1 : 1);
         },
@@ -97,26 +101,30 @@ export const useStore = defineStore('store',{
         deleteUser(id){
             this.users = [...this.users.filter(user => user.id != id)];
             
-            const newTasks = [];
+            let newGroups = [];
 
-            for(let task of this.tasks){
-                const newTaskCollaborators = task.collaborators.filter(userId => userId != id);
-                const newTask = {...task, collaborators : [...newTaskCollaborators]};
+            for(let group of this.groups){
+                let newGroup = group;
+                let newGroupTasks = [];
 
-                newTasks.push(newTask);
+                for(let task of group.tasks){
+                    newGroupTasks.push({...task, collaborators: task.collaborators.filter(userId => userId != id) })
+                }
+
+                newGroup = {...group, tasks: [...newGroupTasks]};
+
+                newGroups.push(newGroup)
             }
 
-            this.tasks = [...newTasks];
+            this.groups = [...newGroups];
         },
 
-        changeTasks(params){
-            const task = {...params.task, groupId: params.to };
-        
-            const oldTasks = this.tasks.filter(task => task.id != params.task.id);
-        
-            const newTasks = [...oldTasks, task];
-        
-            this.tasks = [...newTasks];
+        sortTasks(tasks, groupId){
+            const group = this.groups.find(group => group.id == groupId);
+
+            group.tasks = tasks;
+
+            this.groups = [...this.groups.filter(group => group.id != groupId), group].sort( (a,b) => a.id < b.id ? -1 : 1);
         }
     },
 })

@@ -18,7 +18,7 @@
             <button @click="emit('taskEditDone');">Cancel</button>
             <button @click="submitEditTask()" :disabled="!(task.text && task.key && task.collaborators.length)"
                 :class="{ 'disabled:opacity-50': !(task.text && task.key && task.collaborators.length) }">Edit</button>
-            <button class="bg-red-500" @click="store.deleteTask(task.id)">Delete</button>
+            <button class="bg-red-500" @click="deleteTask">Delete</button>
         </div>
     </div>
 </template>
@@ -35,7 +35,12 @@ const store = useStore();
 const task = reactive(props.task);
 
 const submitEditTask = () => {
-    store.editTask(task.id, task.groupId, task.text, task.key, [...task.collaborators]);
+    store.editTask(task.id, store.selectedTaskRow, task.text, task.key, [...task.collaborators]);
+    emit('taskEditDone');
+}
+
+const deleteTask = () => {
+    store.deleteTask(task.id, store.selectedTaskRow);
     emit('taskEditDone');
 }
 

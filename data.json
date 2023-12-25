@@ -2,77 +2,74 @@
     "groups":[
         {
             "name" : "Marketing",
-            "id": 1
+            "id": 1,
+            "tasks":[
+                {
+                    "id": 1,
+                    "text" : "Do this and this",
+                    "key" : "1",
+                    "collaborators": [1,2,3]
+                },
+                {
+                    "id": 2,
+                    "text" : "Do this and this",
+                    "key" : "2",
+                    "collaborators": [1,2,3]
+                },
+                {
+                    "id": 3,
+                    "text" : "Do this and this",
+                    "key" : "1",
+                    "collaborators": [1,2,3]
+                }
+            ]
         },
        {
             "name" : "SEO",
-            "id": 2
+            "id": 2,
+            "tasks":[
+                {
+                    "id": 4,
+                    "text" : "Do this and this",
+                    "key" : "2",
+                    "collaborators": [1,2,3]
+                },
+                {
+                    "id": 5,
+                    "text" : "Do this and this",
+                    "key" : "2",
+                    "collaborators": [1,2,3]
+                },
+                {
+                    "id": 6,
+                    "text" : "Do this and this",
+                    "key" : "3",
+                    "collaborators": [1,2,3]
+                }
+            ]
         },
         {
             "name": "Management",
-            "id" : 3
+            "id" : 3,
+            "tasks":[
+                {
+                    "id": 7,
+                    "text" : "Do this and this",
+                    "key" : "1",
+                    "collaborators": [1,2,3]
+                },
+                {
+                    "id": 8,
+                    "text" : "Do this and this",
+                    "key" : "2",
+                    "collaborators": [1,2,3]
+                }
+            ]
         },
         {
             "name": "Coordinations",
-            "id" : 4
-        }
-    ],
-    "tasks":[
-        {
-            "id": 1,
-            "groupId" : 1,
-            "text" : "Do this and this",
-            "key" : "1",
-            "collaborators": [1,2,3]
-        },
-        {
-            "id": 2,
-            "groupId" : 4,
-            "text" : "Do this and this",
-            "key" : "2",
-            "collaborators": [1,2,3]
-        },
-        {
-            "id": 3,
-            "groupId" : 1,
-            "text" : "Do this and this",
-            "key" : "1",
-            "collaborators": [1,2,3]
-        },
-        {
-            "id": 4,
-            "groupId" : 4,
-            "text" : "Do this and this",
-            "key" : "2",
-            "collaborators": [1,2,3]
-        },
-        {
-            "id": 5,
-            "groupId" : 4,
-            "text" : "Do this and this",
-            "key" : "2",
-            "collaborators": [1,2,3]
-        },
-        {
-            "id": 6,
-            "groupId" : 3,
-            "text" : "Do this and this",
-            "key" : "3",
-            "collaborators": [1,2,3]
-        },
-        {
-            "id": 7,
-            "groupId" : 2,
-            "text" : "Do this and this",
-            "key" : "1",
-            "collaborators": [1,2,3]
-        },
-        {
-            "id": 8,
-            "groupId" : 2,
-            "text" : "Do this and this",
-            "key" : "2",
-            "collaborators": [1,2,3]
+            "id" : 4,
+            "tasks": []
         }
     ],
     "users":[
