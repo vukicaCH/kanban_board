@@ -18,7 +18,6 @@
                 item-key="id"
                 :disabled="isTaskEdit"
                 :id="group.id"
-                @end="(evt) => store.changeTasks({task: evt.item.__draggable_context.element, to: evt.to.id})"
             >
                 <template #item="{ element }">
                     <Task
@@ -62,7 +61,7 @@ const rowName = ref(props.group.name);
 
 const isSelectedRow = ref(props.group.id == store.selectedTaskRow);
 
-const tasks = ref();
+const tasks = ref(props.group.tasks);
 
 const editMode = ref(false);
 const addMode = ref(false);
@@ -85,7 +84,7 @@ const isTaskEdit = ref(false);
 const toggleTaskEdit = () => isTaskEdit.value = !isTaskEdit.value;
 
 watchEffect(()=>{
-    tasks.value = store.getTasks(props.group.id);
+    tasks.value = props.group.tasks;
 })
 
 watch(()=> store.selectedTaskRow, ()=>{
@@ -93,6 +92,10 @@ watch(()=> store.selectedTaskRow, ()=>{
     rowName.value = props.group.name; //SVAKI PUT KADA SELEKTUJEMO DRUGI RED, rowName mora da se vrati na pocetnu vrednost
     editMode.value = false;
     addMode.value = false;
+})
+
+watch(()=> tasks.value, ()=>{
+    store.sortTasks(tasks.value, props.group.id);
 })
 </script>
 
