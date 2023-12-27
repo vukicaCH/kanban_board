@@ -22,9 +22,9 @@ const toggleUserAssign = (userId) => {
 </script>
 
 <template>
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-2 gap-2 mx-2">
             <div
-                class="bg-white text-center shadow rounded-lg"
+                class="bg-white text-center text-xs shadow rounded-lg p-0"
                 v-for="user in users"
                 :key="user.id"
                 @click="toggleUserAssign(user.id)"

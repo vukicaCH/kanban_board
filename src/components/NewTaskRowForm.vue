@@ -1,13 +1,18 @@
 <template>
     <div v-if="!store.isNewTaskRowFormOpened">
-        <button @click="store.openNewTaskRowForm()">+</button>
+        <button
+            @click="store.openNewTaskRowForm()"
+            class="p-4 bg-purple-600 border border-gray-500 rounded-lg font-bold text-lg text-white"
+        >
+            +
+        </button>
     </div>
-    <div v-else class="task-row">
+    <div v-else class="flex flex-col justify-center items-center border border-gray-300 rounded-lg">
         <input type="text" v-model="taskRowName" placeholder="Name..." />
-        <div class="new-task-row-buttons">
-            <button @click="store.closeNewTaskRowForm">Cancel</button>
+        <div class="flex justify-between text-white gap-2 mt-3">
+            <button @click="store.closeNewTaskRowForm" class="py-1 px-2 bg-gray-600 rounded-lg">Cancel</button>
             <button @click="submitNewTaskRow" :disabled="!taskRowName"
-                :class="{ 'disabled:opacity-50': !taskRowName }">Add Row</button>
+                :class="{ 'disabled:opacity-50': !taskRowName }" class="py-1 px-2 bg-blue-300 border border-gray-500 rounded-lg">Add Row</button>
         </div>
     </div>
 </template>
@@ -26,41 +31,3 @@ const submitNewTaskRow = () => {
 }
 
 </script>
-
-<style scoped>
-.task-row {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 220px;
-    max-height: fit-content;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: 1px solid rgb(142, 136, 136);
-}
-
-.new-task-row-buttons {
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 5px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.new-task-row-buttons button {
-    margin: 0 2px;
-    color: white;
-    border: 1px solid rgb(69, 67, 67);
-    padding: 3px 10px;
-    border-radius: 5px;
-}
-
-.new-task-row-buttons button:nth-child(1) {
-    background-color: grey;
-}
-
-.new-task-row-buttons button:nth-child(2) {
-    background-color: rgb(53, 175, 189);
-}
-</style>

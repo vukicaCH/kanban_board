@@ -1,12 +1,12 @@
 <template>
-    <div v-if="!isTaskBeingEdited" class="task" @dblclick="disableDrag()">
-        <div class="task-importance" :class="color"></div>
-        <div class="task-data">
-            <h3 class="task-name">{{ task.text }}</h3>
-            <div class="task-collaborators bg-gray-400 text-white py-1 px-2">
-                <span>Ucesnici:</span>
-                <ul class="text-xs flex space-x-2">
-                    <li v-for="user in users" :key="user.id">
+    <div v-if="!isTaskBeingEdited" class="w-[200px] rounded-lg flex overflow-hidden border border-white" @dblclick="disableDrag()">
+        <div class="w-3" :class="color"></div>
+        <div class="w-full">
+            <h3 class="text-center text-white bg-black font-bold py-1">{{ task.text }}</h3>
+            <div class="bg-gray-300 flex flex-col justify-center items-center p-3 relative">
+                <span class="text-sm font-bold absolute top-1 left-1">Ucesnici:</span>
+                <ul class="text-xs mt-6 grid grid-cols-2 gap-2">
+                    <li v-for="user in users" :key="user.id" class="block w-16 h-4 bg-white text-center rounded-lg">
                         {{ user.name }}
                     </li>
                 </ul>
@@ -33,11 +33,11 @@ const isTaskBeingEdited = ref(false);
 function taskColor() {
     switch (task.key) {
         case "1":
-            return 'completed';
+            return 'bg-blue-500';
         case "2":
-            return 'urgent';
+            return 'bg-red-500';
         case "3":
-            return 'in-progress';
+            return 'bg-yellow-500';
     }
 }
 
@@ -70,26 +70,6 @@ watch(()=> props.task, ()=>{
 </script>
 
 <style scoped>
-.task {
-    border: 1px solid rgb(166, 164, 164);
-    width: 180px;
-    max-height: fit-content;
-    min-height: 50px;
-    display: flex;
-    margin: 10px 0;
-}
-
-.task-importance {
-    background-color: rgb(71, 181, 228);
-    min-width: 5px;
-    max-width: 5px;
-}
-
-.task-data {
-    flex-grow: 1;
-    padding: 5px;
-    background-color: rgb(230, 225, 225);
-}
 
 .urgent {
     background-color: rgb(248, 22, 22);

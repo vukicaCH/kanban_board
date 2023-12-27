@@ -1,5 +1,5 @@
 <template>
-        <div class="task-board">
+        <div class="grid grid-cols-5 auto-rows-fr m-auto min-w-[800px] max-w-fit gap-5 mb-16">
             <TaskRow
                 v-for="group in groups" :group="group" :key="group.id"
                 @click="store.changeSelectedTaskRow(group.id)"
@@ -18,16 +18,3 @@ const store = useStore();
 
 const {groups} = storeToRefs(store);
 </script>
-
-<style scoped>
-.task-board {
-    display: grid;
-    grid-auto-rows: 1fr;
-    grid-template-columns: repeat(5,1fr);
-    gap: 5px;
-    padding: 10px;
-    min-width: 800px;
-    max-width: fit-content;
-    margin: auto;
-}
-</style>

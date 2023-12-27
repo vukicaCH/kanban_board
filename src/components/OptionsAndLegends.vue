@@ -1,32 +1,34 @@
 <template>
-    <div class="options-and-legend">
-        <h1>Key</h1>
-        <div class="task-keys">
-            <div class="task-key">
-                <div class="task-key-color completed"></div>
-                <div class="task-key-color-meaning">Completed</div>
+        <div class="flex justify-start items-center p-8 -mb-12">
+            <div class="flex flex-col space-y-1">
+            <h1>Key</h1>
+            <div class="flex gap-2">
+                <div class="w-5 h-5 bg-blue-500"></div>
+                <div>Completed</div>
             </div>
-            <div class="task-key">
-                <div class="task-key-color urgent"></div>
-                <div class="task-key-color-meaning">Urgent</div>
+            <div class="flex gap-2">
+                <div class="w-5 h-5 bg-red-500"></div>
+                <div>Urgent</div>
             </div>
-            <div class="task-key">
-                <div class="task-key-color in-progress"></div>
-                <div class="task-key-color-meaning">In Progress</div>
+            <div class="flex gap-2">
+                <div class="w-5 h-5 bg-yellow-500"></div>
+                <div>In Progress</div>
+            </div>
             </div>
         </div>
-        <div class="actions mt-5 space-y-3">
+
+        <div class="absolute p-8 space-y-4">
             <div class="bg-blue-300 px-4 py-3">
-                <h3 class="font-bold">ADD USER</h3>
-                <div class="flex flex-col items-start gap-1 mt-2">
-                    <input v-model="userName" class="shadow border border-gray-100" placeholder="enter username"/>
-                    <button @click="store.addUser(userName)" :disabled="!userName">Add New User</button>
-                </div>
+                    <h3 class="font-bold">ADD USER</h3>
+                    <div class="flex flex-col items-start gap-1 mt-2">
+                        <input v-model="userName" class="shadow border border-gray-100" placeholder="enter username"/>
+                        <button @click="addUser" :disabled="!userName" class="py-1 px-2 bg-white border border-gray-500 rounded-lg">Add New User</button>
+                    </div>
             </div>
             <div>
                 <h3 class="font-bold">AVAILABLE USERS</h3>
 
-                <div class="flex flex-col space-y-1">
+                <div class="grid space-y-1 max-h-[400px]" :class="{'overflow-y-scroll' : store.users.length > 15}">
                     <div v-for="user in store.users" :key="user.id" class="flex items-center">
                         <span class="underline text-lg">{{ user.name }}</span>
                         <button class="text-sm bg-red-500 text-white px-2 ml-3" @click="store.deleteUser(user.id)">OBRISI</button>
@@ -34,7 +36,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script setup>
@@ -44,39 +45,9 @@ import {ref} from 'vue';
 const store = useStore();
 
 const userName = ref('');
+
+const addUser = () =>{
+    store.addUser(userName.value);
+    userName.value = '';
+}
 </script>
-
-<style scoped>
-.options-and-legend {
-    padding: 10px;
-}
-
-.options-and-legend h1 {
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.task-keys {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.task-key {
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-    gap: 5px;
-}
-
-.urgent {
-    background-color: rgb(248, 22, 22);
-}
-
-.completed {
-    background-color: rgb(71, 181, 228);
-}
-
-.in-progress {
-    background-color: rgb(248, 214, 18);
-}
-</style>

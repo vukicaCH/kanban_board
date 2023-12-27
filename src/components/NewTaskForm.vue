@@ -1,23 +1,23 @@
 <template>
-    <div class="new-task">
-        <input type="text" v-model="taskText" placeholder="Task Name..."/>
-        <select v-model="taskKeyColor">
+    <div class="w-[200px] space-y-2 bg-gray-300 overflow-hidden rounded-lg">
+        <input type="text" class="w-full" v-model="taskText" placeholder="Task Name..."/>
+        <select v-model="taskKeyColor" class="w-full">
             <option disabled value="">Please select key</option>
-            <option class="completed" value="1">
+            <option class="bg-blue-500" value="1">
                 <div>Completed</div>
             </option>
-            <option class="urgent" value="2">
+            <option class="bg-red-500" value="2">
                 <div>Urgent</div>
             </option>
-            <option class="in-progress" value="3">
+            <option class="bg-yellow-500" value="3">
                 <div>In Progress</div>
             </option>
         </select>
         <UserPicker @userSelected="(users) => taskUsers = users" :collaborators="taskUsers"/>
-        <div class="new-task-buttons">
-            <button @click="props.close()">Cancel</button>
+        <div class="flex justify-between text-white gap-2">
+            <button class="py-1 px-2 bg-gray-600 rounded-lg" @click="props.close()">Cancel</button>
             <button @click="submitNewTask()" :disabled="!isDisabled"
-                :class="{ 'disabled:opacity-50': !isDisabled }">Add Task</button>
+             class="py-1 px-2 bg-blue-300 border border-gray-500 rounded-lg"   :class="{ 'disabled:opacity-50': !isDisabled }">Add Task</button>
         </div>
     </div>
 </template>
@@ -44,55 +44,3 @@ const submitNewTask = () => {
     props.close();
 }
 </script>
-
-<style scoped>
-.new-task {
-    width: 180px;
-    min-height: 50px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.new-task input,
-select {
-    max-width: 100%;
-    border: 1px solid rgb(166, 164, 164);
-}
-
-.new-task-buttons {
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 5px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.new-task-buttons button {
-    margin: 0 2px;
-    color: white;
-    border: 1px solid rgb(69, 67, 67);
-    padding: 3px 10px;
-    border-radius: 5px;
-}
-
-.new-task-buttons button:nth-child(1) {
-    background-color: grey;
-}
-
-.new-task-buttons button:nth-child(2) {
-    background-color: rgb(53, 175, 189);
-}
-
-.urgent {
-    background-color: rgb(248, 22, 22);
-}
-
-.completed {
-    background-color: rgb(71, 181, 228);
-}
-
-.in-progress {
-    background-color: rgb(248, 214, 18);
-}
-</style>

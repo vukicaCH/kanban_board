@@ -1,18 +1,18 @@
 <template>
-    <div class="task-row" :class="{'bg-blue-200' : isSelectedRow}">
-        <div class="absolute top-1 left-1">
-            <div class="task-row-name" v-if="editMode && isSelectedRow">
+    <div class="flex flex-col relative w-[250px] cursor-pointer border border-gray-300 rounded-lg" :class="{'bg-blue-200' : isSelectedRow}">
+        <div class="absolute top-3 left-3">
+            <div class="flex flex-col" v-if="editMode && isSelectedRow">
                 <input type="text" v-model="rowName" />
                 <button @click="editName()">Save</button>
             </div>
             <div class="flex items-center gap-2" v-else>
-                <h2>{{ props.group.name }}</h2>
-                <PencilIcon class="w-4 h-4" @click="toggleEdit()"  v-if="isSelectedRow"/>
+                <h2 class="font-bold">{{ props.group.name }}</h2>
+                <PencilIcon class="w-4 h-4 text-black hover:text-white" @click="toggleEdit()"  v-if="isSelectedRow"/>
             </div>
         </div>
-        <div class="w-100 mt-16">
+        <div class="w-100 mt-16 mb-8 m-auto">
             <draggable
-                class="tasks"
+                class="w-100 space-y-3 min-h-[100px]"
                 v-model="tasks"
                 group="tasks"
                 item-key="id"
@@ -30,10 +30,10 @@
             </draggable>
             <div
                 v-if="isSelectedRow"
-                class="w-full flex flex-col gap-2"
+                class="min-w-[200px] w-full flex flex-col gap-2 mt-3"
             >
                 <span
-                    class="inline-block w-full bg-red-500 text-center font-medium text-white"
+                    class="w-[200px] inline-block w-full bg-red-500 text-center text-white rounded-lg font-bold"
                     v-if="!addMode"
                     @click="toggleAdd"
                 >
@@ -100,17 +100,6 @@ watch(()=> tasks.value, ()=>{
 </script>
 
 <style scoped>
-.task-row {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 220px;
-    max-height: fit-content;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: 1px solid rgb(142, 136, 136);
-    position:relative;
-}
 
 .task-row-name {
     display: flex;

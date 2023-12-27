@@ -1,24 +1,30 @@
 <template>
-    <div class="edit-task">
-        <input type="text" v-model="task.text" />
-        <select v-model="task.key">
+    <div class="w-[200px] space-y-2 bg-gray-300 overflow-hidden rounded-lg">
+        <input type="text" v-model="task.text" class="w-full"/>
+        <select v-model="task.key" class="w-full">
             <option disabled value="">Please select key</option>
-            <option class="completed" value="1">
+            <option class="bg-blue-500" value="1">
                 <div>Completed</div>
             </option>
-            <option class="urgent" value="2">
+            <option class="bg-red-500" value="2">
                 <div>Urgent</div>
             </option>
-            <option class="in-progress" value="3">
+            <option class="bg-yellow-500" value="3">
                 <div>In Progress</div>
             </option>
         </select>
         <UserPicker @userSelected="(users) => task.collaborators = users" :collaborators="task.collaborators"/>
-        <div class="edit-task-buttons">
-            <button @click="emit('taskEditDone');">Cancel</button>
-            <button @click="submitEditTask()" :disabled="!(task.text && task.key && task.collaborators.length)"
-                :class="{ 'disabled:opacity-50': !(task.text && task.key && task.collaborators.length) }">Edit</button>
-            <button class="bg-red-500" @click="deleteTask">Delete</button>
+        <div class="flex justify-between text-white gap-2">
+            <button @click="emit('taskEditDone');" class="py-1 px-2 bg-gray-600 rounded-lg">Cancel</button>
+            <button class="py-1 px-2 bg-red-500 border border-gray-500 rounded-lg" @click="deleteTask">Delete</button>
+            <button
+                @click="submitEditTask()"
+                :disabled="!(task.text && task.key && task.collaborators.length)"
+                :class="{ 'disabled:opacity-50': !(task.text && task.key && task.collaborators.length) }"
+                class="py-1 px-2 bg-blue-300 border border-gray-500 rounded-lg"
+            >
+            Edit
+            </button>
         </div>
     </div>
 </template>
@@ -45,42 +51,3 @@ const deleteTask = () => {
 }
 
 </script>
-
-<style scoped>
-.edit-task {
-    width: 180px;
-    min-height: 50px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.edit-task input,select{
-    max-width: 100%;
-    border: 1px solid rgb(166, 164, 164);
-}
-
-.edit-task-buttons {
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 5px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.edit-task-buttons button {
-    margin: 0 2px;
-    color: white;
-    border: 1px solid rgb(69, 67, 67);
-    padding: 3px 10px;
-    border-radius: 5px;
-}
-
-.edit-task-buttons button:nth-child(1) {
-    background-color: grey;
-}
-
-.edit-task-buttons button:nth-child(2) {
-    background-color: rgb(53, 175, 189);
-}
-</style>
